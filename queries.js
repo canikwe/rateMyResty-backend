@@ -45,8 +45,9 @@ const createUser = (req, res, next) => {
   'VALUES (${name})' + 
   'RETURNING *', 
   req.body)
-  .then((data) => {
+  .then(data => {
     console.log(data)
+
     res.status(200)
     .json({
       status: 'success',
@@ -61,9 +62,32 @@ const createUser = (req, res, next) => {
   })
 }
 
+const updateUser = (req, res, next) => {
+  const columns = Object.keys(req.body)
+  const values = Object.values(req.body)
+  const query = columns.map((c, i) => `${c}=$${i + 1}`).join(', ')
+
+  db.one(`UPDATE users SET ${query}, updated_at=current_timestamp WHERE id=${req.params.id} RETURNING *`, values)
+  .then(data => {
+    console.log(data)
+
+    res.status(200)
+    .json({
+      status: 'success',
+      data: data,
+      message: 'Updated user'
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    return next(err)
+  })
+}
+
 
 module.exports = {
   getAllUsers: getAllUsers,
   getSingleUser: getSingleUser,
-  createUser: createUser
+  createUser: createUser,
+  updateUser: updateUser
 }
