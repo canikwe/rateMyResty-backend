@@ -10,6 +10,7 @@ app.get('/', (req, res) => {
   })
 })
 
-app.get('/users', db.getAllUsers)
+app.get('/api/users', db.getAllUsers)
+app.get('/api/users/:id', db.getSingleUser)
 
 app.listen(port, () => console.log(`Listening on port ${port}`))
