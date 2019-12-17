@@ -19,4 +19,24 @@ app.post('/api/users', db.createUser)
 app.patch('/api/users/:id', db.updateUser)
 app.delete('/api/users/:id', db.deleteUser)
 
+// Development error handling
+if (app.get('env') === 'development') {
+  app.use((err, req, res, next) => {
+    res.status( err.code || 500 )
+    .json({
+      status: 'error',
+      message: err
+    })
+  })
+}
+
+// Production error handling
+app.use((err, req, res, next) => {
+  res.status( err.status || 500 )
+  .json({
+    status: 'error',
+    message: err.message
+  })
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`))

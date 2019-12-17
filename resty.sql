@@ -13,8 +13,8 @@ CREATE TABLE users (
 INSERT INTO users (name)
   VALUES ('Chine');
 
-  INSERT INTO users (name)
-    VALUES ('Trevor');
+INSERT INTO users (name)
+  VALUES ('Trevor');
 
 INSERT INTO users (name)
   VALUES ('Shannon');
