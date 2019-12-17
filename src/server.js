@@ -17,5 +17,6 @@ app.get('/api/users', db.getAllUsers)
 app.get('/api/users/:id', db.getSingleUser)
 app.post('/api/users', db.createUser)
 app.patch('/api/users/:id', db.updateUser)
+app.delete('/api/users/:id', db.deleteUser)
 
 app.listen(port, () => console.log(`Listening on port ${port}`))

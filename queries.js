@@ -84,10 +84,29 @@ const updateUser = (req, res, next) => {
   })
 }
 
+const deleteUser = (req, res, next) => {
+  db.one(`DELETE FROM users WHERE id=${req.params.id} RETURNING *`)
+  .then(data => {
+    console.log(data)
+
+    res.status(200)
+    .json({
+      status: 'success',
+      data: data,
+      message: 'Deleted user'
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    return next(err)
+  })
+}
+
 
 module.exports = {
   getAllUsers: getAllUsers,
   getSingleUser: getSingleUser,
   createUser: createUser,
-  updateUser: updateUser
+  updateUser: updateUser,
+  deleteUser: deleteUser
 }
