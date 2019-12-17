@@ -23,7 +23,7 @@ const getAllUsers = (req, res, next) => {
 
 const getSingleUser = (req, res, next) => {
   const userId = req.params.id
-  db.any('SELECT * FROM users WHERE id =$1', userId)
+  db.one('SELECT * FROM users WHERE id =$1', userId)
   .then(data => {
     console.log(data)
     res.status(200)
@@ -39,8 +39,31 @@ const getSingleUser = (req, res, next) => {
   })
 }
 
+const createUser = (req, res, next) => {
+  console.log(req.body)
+  db.one('INSERT INTO users (name)' + 
+  'VALUES (${name})' + 
+  'RETURNING *', 
+  req.body)
+  .then((data) => {
+    console.log(data)
+    res.status(200)
+    .json({
+      status: 'success',
+      data: data,
+      message: 'Created new user'
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    console.log(req.body)
+    return next(err)
+  })
+}
+
+
 module.exports = {
   getAllUsers: getAllUsers,
   getSingleUser: getSingleUser,
-  // createUser: createUser
+  createUser: createUser
 }
