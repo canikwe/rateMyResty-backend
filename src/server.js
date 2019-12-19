@@ -2,9 +2,14 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+// Handles fetch requests to Yelp API
 const fetch = require('node-fetch')
 const bluebird = require('bluebird')
 fetch.promise = bluebird
+
+// Allows cross origin requests
+const cors = require('cors')
+app.use(cors())
 
 // Database queries
 const db = require('../queries.js')
@@ -24,6 +29,7 @@ app.get('/', (req, res) => {
 
 // Yelp calls
 app.get('/yelp/:term/:location', (req, res) => {
+  console.log(req)
   fetch(`https://api.yelp.com/v3/businesses/search?term=${req.params.term}&location=${req.params.location}&limit=10`, {
     headers: {
       Authorization: `Bearer ${process.env.api_key}`
