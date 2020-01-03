@@ -102,11 +102,32 @@ const deleteUser = (req, res, next) => {
   })
 }
 
+const getUserByName = (req, res, next) => {
+  const name = req.body.name
+  console.log(name)
+  db.one(`SELECT * FROM users WHERE name=$1`, name)
+  .then(data => {
+    console.log(data)
+
+    res.status(200)
+    .json({
+      status: 'success',
+      data: data,
+      message: 'Found the user!'
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    return next(err)
+  })
+}
+
 
 module.exports = {
   getAllUsers: getAllUsers,
   getSingleUser: getSingleUser,
   createUser: createUser,
   updateUser: updateUser,
-  deleteUser: deleteUser
+  deleteUser: deleteUser,
+  getUserByName: getUserByName
 }

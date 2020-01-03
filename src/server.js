@@ -28,9 +28,9 @@ app.get('/', (req, res) => {
 })
 
 // Yelp calls
-app.get('/yelp/:term/:location', (req, res) => {
+app.get('/restaurants/:location', (req, res) => {
   console.log(req)
-  fetch(`https://api.yelp.com/v3/businesses/search?term=${req.params.term}&location=${req.params.location}&limit=10`, {
+  fetch(`https://api.yelp.com/v3/businesses/search?term=restaurants&location=${req.params.location}&limit=10`, {
     headers: {
       Authorization: `Bearer ${process.env.api_key}`
     }
@@ -49,6 +49,7 @@ app.get('/yelp/:term/:location', (req, res) => {
 // Database queries
 app.get('/api/users', db.getAllUsers)
 app.get('/api/users/:id', db.getSingleUser)
+app.post('/api/login/', db.getUserByName)
 app.post('/api/users', db.createUser)
 app.patch('/api/users/:id', db.updateUser)
 app.delete('/api/users/:id', db.deleteUser)
